@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8">
+      <h3>Select Your Seats</h3>
+      <div class="bus-layout mb-4">
+        <!-- Driver Area -->
+        <div class="driver-area text-center mb-3">
+          <div class="bus-front"></div>
+          <p class="text-muted">Driver</p>
+        </div>
+
+        <!-- Seats Grid -->
+        <div class="seats-grid" id="seatsContainer">
+          {% for seat in seats %}
+            <div class="seat {% if seat.is_booked %}booked{% else %}available{% endif %}"
+                 data-seat-id="{{ seat.id }}"
+                 onclick="toggleSeat(this)">
+              {{ seat.seat_number }}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Booking Summary -->
+    <div class="col-md-4">
+      <div class="card shadow">
+        <div class="card-body">
+          <h5 class="card-title">Your Selection</h5>
+          <ul id="selectedSeats" class="list-group mb-3">
+            <!-- Selected seats will appear here -->
+          </ul>
+          <p>Total: $<span id="totalPrice">0</span></p>
+          <form method="POST" action="{% url 'create_booking' %}">
+            {% csrf_token %}
+            <input type="hidden" name="seat_ids" id="seatIds">
+            <button type="submit" class="btn btn-success w-100">Proceed to Payment</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .bus-layout {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+  }
+
+  .seats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  .seat {
+    width: 60px;
+    height: 60px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .seat.available {
+    background: #e9ecef;
+  }
+
+  .seat.available:hover {
+    background: #dee2e6;
+  }
+
+  .seat.selected {
+    background: #4CAF50 !important;
+    color: white;
+    border-color: #4CAF50;
+  }
+
+  .seat.booked {
+    background: #dc3545;
+    color: white;
+    cursor: not-allowed;
+  }
+
+  .driver-area {
+    padding: 10px;
+    border-bottom: 2px dashed #ddd;
+  }
+
+  .bus-front {
+    width: 100px;
+    height: 30px;
+    background: #6c757d;
+    margin: 0 auto;
+    border-radius: 5px 5px 0 0;
+  }
+</style>
+
+<script>
+  let selectedSeats = [];
+
+  function toggleSeat(seatElement) {
+    const seatId = seatElement.dataset.seatId;
+    const isBooked = seatElement.classList.contains('booked');
+
+    if (!isBooked) {
+      seatElement.classList.toggle('selected');
+      
+      if (selectedSeats.includes(seatId)) {
+        selectedSeats = selectedSeats.filter(id => id !== seatId);
+      } else {
+        selectedSeats.push(seatId);
+      }
+
+      // Update UI
+      document.getElementById('selectedSeats').innerHTML = selectedSeats
+        .map(id => `<li class="list-group-item">Seat ${id}</li>`)
+        .join('');
+
+      document.getElementById('totalPrice').textContent = 
+        (selectedSeats.length * {{ seat_price }}).toFixed(2);
+
+      document.getElementById('seatIds').value = selectedSeats.join(',');
+    }
+  }
+</script>
+{% endblock %}

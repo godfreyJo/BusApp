@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h3>Available Buses</h3>
+    {% for schedule in schedules %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5>{{ schedule.bus.name }}</h5>
+            <p>
+                {{ schedule.route.origin }} → {{ schedule.route.destination }}
+                <br>
+                Departure: {{ schedule.departure_time|date:"D, M j, H:i" }}
+                <br>
+                Price: ${{ schedule.price }}
+            </p>
+            <a href="{% url 'seat_selection' schedule.id %}" class="btn btn-primary">
+                Select Seats
+            </a>
+        </div>
+    </div>
+    {% empty %}
+    <div class="alert alert-warning">No buses found for this route.</div>
+    {% endfor %}
+</div>
+{% endblock %}

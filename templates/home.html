@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section -->
+<header class="bg-primary text-white py-5">
+  <div class="container text-center">
+    <h1>Book Your Bus Journey</h1>
+    <p class="lead">Fast, Affordable, and Reliable</p>
+  </div>
+</header>
+
+<!-- Search Form -->
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card shadow">
+          <div class="card-body">
+            <h3 class="card-title mb-4">Find Your Bus</h3>
+            <form method="GET" action="#">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <input type="text" class="form-control" name="origin" placeholder="From" required>
+                </div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" name="destination" placeholder="To" required>
+                </div>
+                <div class="col-md-12">
+                  <input type="date" class="form-control" name="date" required>
+                </div>
+                <div class="col-md-12">
+                  <button type="submit" class="btn btn-primary w-100">Search Buses</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="bg-light py-5">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5>🛣️ 100+ Routes</h5>
+            <p>Connect to major cities nationwide</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5>🔒 Secure Booking</h5>
+            <p>SSL encryption for safe transactions</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5>🎫 E-Tickets</h5>
+            <p>Instant email/SMS confirmation</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
