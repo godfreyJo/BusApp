@@ -27,3 +27,6 @@ class Schedule(models.Model):
     departure_time = models.DateTimeField()
     arrival_time = models.DateTimeField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return self.bus.bus_number + " - " + self.route.origin + " - " + self.route.destinaiton + " - " + str(self.departure_time)
