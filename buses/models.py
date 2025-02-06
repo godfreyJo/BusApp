@@ -6,10 +6,20 @@ class Bus(models.Model):
     bus_number = models.CharField(max_length=10)
     seats = models.IntegerField()
     total_seats = models.IntegerField()
+
+    class Meta:
+        verbose_name_plural = "Buses"
+    
+    def __str__(self):
+        return self.bus_number
     
 class Route(models.Model):
     origin = models.CharField(max_length=100)
     destinaiton = models.CharField(max_length=100)
+
+    def __str__(self):
+        
+        return self.origin + "-" + self.destinaiton
 
 class Schedule(models.Model):
     bus = models.ForeignKey(Bus, on_delete=models.CASCADE)
