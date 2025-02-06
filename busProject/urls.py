@@ -16,8 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from buses.views import home
+from bookings.views import seat_selection
 
 urlpatterns = [
+
+    path('', home, name='home'),
+    path('seats/<int:schedule_id>/', seat_selection, name='seat_selection'),
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     path('users/', include('django.contrib.auth.urls')),
